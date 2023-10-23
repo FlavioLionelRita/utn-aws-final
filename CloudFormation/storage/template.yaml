@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: Storage stack  
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: Specify the VPC Id to deploy this to.
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of private subnet Ids.
+  ServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the security group to be used for the service.
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the security group to be used for the EC2 instance.  
+Resources:
+  EFSMountTargetSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-EFS-MT-SG
+      GroupDescription: !Sub ${Namespace} Service EFS Mount Target Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from ServiceSecurityGroup on port 2049.
+          IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId: !Ref ServiceSecurityGroup
+        - Description : Allow traffic from EC2SecurityGroup on port 2049.
+          IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId: !Ref EC2SecurityGroup  
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EFS-MT-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      Encrypted: false
+      FileSystemTags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EFS
+      BackupPolicy:
+        Status:  DISABLED
+      PerformanceMode: generalPurpose
+      ThroughputMode: bursting       
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !Select [ 0, !Ref PrivateSubnetIds ]
+      SecurityGroups:
+        - !Ref EFSMountTargetSecurityGroup
+  EFSMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !Select [ 1, !Ref PrivateSubnetIds ]
+      SecurityGroups:
+        - !Ref EFSMountTargetSecurityGroup
+  EFSAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref EFSFileSystem  
+Outputs:
+  EFSFileSystem:
+    Description: EFS file system.
+    Value: !Ref EFSFileSystem
+  EFSAccessPoint:
+    Description: EFS access point.
+    Value: !Ref EFSAccessPoint      

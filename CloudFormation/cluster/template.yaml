@@ -1,0 +1,114 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ECS Cluster.
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID where the ECS cluster is launched
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: List of subnet IDs where the EC2 instances will be launched
+  
+Resources:
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub /aws/ecs/${AWS::StackName}
+      RetentionInDays: 60
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    DependsOn: [ECSLogGroup]
+    Properties:
+      ClusterName: !Sub ${Namespace}-Cluster
+      ClusterSettings:
+      - Name: containerInsights
+        Value: enabled
+      Configuration:        
+        ExecuteCommandConfiguration:
+          LogConfiguration: 
+            CloudWatchEncryptionEnabled: false
+            CloudWatchLogGroupName: !Ref ECSLogGroup
+          Logging: OVERRIDE
+      ServiceConnectDefaults:
+        Namespace: !Ref Namespace
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-Cluster
+      - Key: Namespace
+        Value: !Ref Namespace    
+  ECSAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn: [ECSCluster]
+    Properties:
+      VPCZoneIdentifier: !Ref SubnetIds
+      LaunchTemplate:
+        LaunchTemplateId: !Ref ECSLaunchTemplate
+        Version: !GetAtt ECSLaunchTemplate.LatestVersionNumber
+      MinSize: '0'
+      MaxSize: '5'
+      DesiredCapacity: '0'
+      NewInstancesProtectedFromScaleIn: true
+      Tags:
+      - Key: Name
+        PropagateAtLaunch: true
+        Value: !Sub ${Namespace}-Cluster-ECSInstance
+      - Key: Namespace
+        PropagateAtLaunch: true
+        Value: !Ref Namespace  
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: 'true'       
+  ECSLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    DependsOn: ECSCluster
+    Properties:
+      LaunchTemplateData:
+        ImageId: ami-0dab0800aa38826f2
+        InstanceType: t2.micro
+        KeyName: SSH
+        IamInstanceProfile:
+          Arn: arn:aws:iam::463621272105:instance-profile/ecsInstanceRole
+        UserData:
+          # This injected configuration file is how the EC2 instance
+          # knows which ECS cluster on your AWS account it should be joining
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config    
+  EC2CapacityProvider:
+    Type: AWS::ECS::CapacityProvider
+    Properties:
+      AutoScalingGroupProvider:
+        AutoScalingGroupArn: !Ref ECSAutoScalingGroup
+        ManagedScaling:
+          Status: ENABLED
+          InstanceWarmupPeriod: 60
+          MinimumScalingStepSize: 1
+          MaximumScalingStepSize: 100
+          TargetCapacity: 100
+        ManagedTerminationProtection: ENABLED
+  ClusterCPAssociation:
+    Type: AWS::ECS::ClusterCapacityProviderAssociations
+    DependsOn: ECSCluster
+    Properties:
+      Cluster: !Sub ${Namespace}-Cluster
+      CapacityProviders:
+      - FARGATE
+      - FARGATE_SPOT
+      - !Ref EC2CapacityProvider
+      DefaultCapacityProviderStrategy:
+      - Base: 0
+        Weight: 1
+        CapacityProvider: !Ref EC2CapacityProvider
+Outputs:
+  ECSLogGroup:
+    Description: Name of the ECS log group.
+    Value: !Ref ECSLogGroup
+  ECSCluster:
+    Description: Name of the ECS cluster.
+    Value: !Ref ECSCluster
+  EC2CapacityProvider:
+    Description: Name of the EC2 capacity provider.
+    Value: !Ref EC2CapacityProvider   

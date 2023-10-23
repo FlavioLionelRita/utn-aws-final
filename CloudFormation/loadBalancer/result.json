@@ -1,0 +1,19 @@
+[
+    [
+        {
+            "OutputKey": "LoadBalancerDNSName",
+            "OutputValue": "lambdaorm-LB-632553115.eu-west-1.elb.amazonaws.com",
+            "Description": "Domain of the load balancer."
+        },
+        {
+            "OutputKey": "LoadBalancerUrl",
+            "OutputValue": "http://lambdaorm-LB-632553115.eu-west-1.elb.amazonaws.com",
+            "Description": "Url of the load balancer."
+        },
+        {
+            "OutputKey": "LoadBalancerTargetGroup",
+            "OutputValue": "arn:aws:elasticloadbalancing:eu-west-1:463621272105:targetgroup/lambda-LoadB-GCXDC94M3VSR/09c2ccc62ce55df7",
+            "Description": "Target group of the load balancer."
+        }
+    ]
+]

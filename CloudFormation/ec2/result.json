@@ -1,0 +1,14 @@
+[
+    [
+        {
+            "OutputKey": "EC2Instance",
+            "OutputValue": "i-0ad8cdeca787ef8f2",
+            "Description": "EC2 instance"
+        },
+        {
+            "OutputKey": "EC2PublicDnsName",
+            "OutputValue": "ec2-54-170-226-72.eu-west-1.compute.amazonaws.com",
+            "Description": "Public DNS name of the EC2 instance"
+        }
+    ]
+]

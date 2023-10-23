@@ -1,0 +1,19 @@
+[
+    [
+        {
+            "OutputKey": "ECSLogGroup",
+            "OutputValue": "/aws/ecs/lambdaorm-cluster",
+            "Description": "Name of the ECS log group."
+        },
+        {
+            "OutputKey": "EC2CapacityProvider",
+            "OutputValue": "lambdaorm-cluster-EC2CapacityProvider-8QJb8s6tZRDx",
+            "Description": "Name of the EC2 capacity provider."
+        },
+        {
+            "OutputKey": "ECSCluster",
+            "OutputValue": "lambdaorm-Cluster",
+            "Description": "Name of the ECS cluster."
+        }
+    ]
+]

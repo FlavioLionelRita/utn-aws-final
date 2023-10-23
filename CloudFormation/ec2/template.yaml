@@ -1,0 +1,79 @@
+# Example: https://stackoverflow.com/questions/72193979/aws-ec2-multiple-public-private-network-interfaces
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: EC2 instance with two network interfaces
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the EC2 Security Group Id to deploy this to.
+  PublicSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of public subnet Ids.
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of private subnet Ids.  
+  KeyName:
+    Description: Name of an EC2 KeyPair to enable SSH access to the instance.
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  EFSFileSystem:
+    Type: String
+    Description: Specify the name of the EFS file system.
+  EFSAccessPoint:
+    Type: String
+    Description: Specify the name of the EFS access point.
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-047bb4163c506cd98 # ami-0dab0800aa38826f2       
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref EC2SecurityGroup
+          SubnetId: !Select [ 0, !Ref PublicSubnetIds ] 
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EC2Instance
+        - Key: Namespace
+          Value: !Ref Namespace
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum install mysql -y
+          yum install -y amazon-efs-utils
+          mkdir /mnt/efs
+          mount -t efs -o tls ${EFSFileSystem}:/ /mnt/efs
+          mkdir /mnt/efs/workspace
+                
+  EC2Eth1:
+    Type: 'AWS::EC2::NetworkInterface'
+    Properties:
+      SubnetId: !Select [ 0, !Ref PrivateSubnetIds ] 
+      GroupSet:
+      - !Ref EC2SecurityGroup
+      Tags:
+      - Key: Name
+        Value: 'simple - host1 eth1'
+      - Key: Namespace
+        Value: !Ref Namespace  
+  EC2Eth1Attachment:
+    Type: 'AWS::EC2::NetworkInterfaceAttachment'
+    Properties:
+      DeleteOnTermination: true
+      DeviceIndex: '1'
+      NetworkInterfaceId: !Ref EC2Eth1
+      InstanceId: !Ref EC2Instance
+Outputs:
+  EC2Instance:
+    Description: EC2 instance
+    Value: !Ref EC2Instance
+  EC2PublicDnsName:    
+    Description: Public DNS name of the EC2 instance
+    Value: !GetAtt EC2Instance.PublicDnsName

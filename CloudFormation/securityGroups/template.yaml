@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: Security Groups stack
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: Specify the VPC Id to deploy this to.
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of private subnet Ids.
+  PublicSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of public subnet Ids.    
+Resources:
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access via port 80 and SSH access via port 22
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EC2SecurityGroup
+        - Key: Namespace
+          Value: !Ref Namespace  
+  ServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-ECSService-SG
+      GroupDescription: !Sub ${Namespace} ECS Service Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from LoadBalancerSecurityGroup on port 80.
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-ECS-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-Database-SG
+      GroupDescription: !Sub ${Namespace} Database Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from ServiceSecurityGroup on port 3306.
+          IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref ServiceSecurityGroup
+        - Description : Allow traffic from EC2 on port 3306.
+          IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref EC2SecurityGroup     
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-Database-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-LB-SG
+      GroupDescription: !Sub ${Namespace} Load Balancer Security Group.
+      SecurityGroupIngress:
+        - Description: Allow traffic from the internet on port 80.
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-LB-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+Outputs:
+  EC2SecurityGroup:
+    Description: EC2 Security Group.
+    Value: !Ref EC2SecurityGroup
+  ServiceSecurityGroup:
+    Description: Service Security Group.
+    Value: !Ref ServiceSecurityGroup
+  DatabaseSecurityGroup:
+    Description: Database Security Group.
+    Value: !Ref DatabaseSecurityGroup
+  LoadBalancerSecurityGroup:
+    Description: Load Balancer Security Group.
+    Value: !Ref LoadBalancerSecurityGroup 

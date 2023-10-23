@@ -1,0 +1,9 @@
+[
+    [
+        {
+            "OutputKey": "DatabaseEndpointAddress",
+            "OutputValue": "lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com",
+            "Description": "Connection endpoint for the database."
+        }
+    ]
+]

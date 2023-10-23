@@ -1,0 +1,242 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: Lambdaorm Service stack
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of private subnet Ids. Each private subnet must have been configured in different availability zones. Please, select only two subnets.
+  Cluster:
+    Type: String
+    Description: Specify the name of the ECS cluster.
+  ECSLogGroup:
+    Type: String
+    Description: Specify the name of the ECS log group.
+  LoadBalancerUrl:
+    Type: String
+    Description: Specify the URL of the load balancer. 
+  LoadBalancerTargetGroup:
+    Type: String
+    Description: Specify the name of the load balancer target group. 
+  ServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the security group to be used for the service.
+  EFSFileSystem:
+    Type: String
+    Description: Specify the name of the EFS file system.
+  EFSAccessPoint:
+    Type: String
+    Description: Specify the name of the EFS access point.
+  DatabaseEndpointAddress:
+    Type: String
+    Description: Connection endpoint for the database.
+  DBUsername:
+    NoEcho: 'true'
+    Description: The northwind database admin account username
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+  DBPassword:
+    NoEcho: 'true'
+    Description: The northwind database admin account password
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: "[a-zA-Z0-9]*"
+    ConstraintDescription: must contain only alphanumeric characters.
+Resources:
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Namespace}-ECSTaskExecutionRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Namespace}-ECSTaskRole
+      Description: !Sub ${Namespace} ECS Task Role.
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+  ECSTaskRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub ${Namespace}-ECSTaskRolePolicy
+      Roles:
+        - !Ref ECSTaskRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - ssmmessages:CreateControlChannel
+              - ssmmessages:CreateDataChannel
+              - ssmmessages:OpenControlChannel
+              - ssmmessages:OpenDataChannel
+            Resource: '*'
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: lambdaorm
+          Image: flaviorita/lambdaorm-svc:0.7.15
+          Environment:
+            - Name: NODE_ENV
+              Value: production
+            - Name: HOST
+              Value: http://0.0.0.0
+            - Name: PORT
+              Value: '80'
+            - Name: LIMIT_WINDOWS_MS
+              Value: '10000'
+            - Name: LIMIT_MAX
+              Value: '10'
+            - Name: WORKSPACE
+              Value: /workspace
+            - Name: DB_HOST
+              Value: !Ref DatabaseEndpointAddress
+            - Name: DB_PORT
+              Value: '3306'
+            - Name: DB_NAME
+              Value: northwind
+            - Name: DB_USER
+              Value: !Ref DBUsername
+            - Name: DB_PASSWORD
+              Value: !Ref DBPassword
+          MountPoints:
+            - SourceVolume: EFS
+              ContainerPath: /workspace
+              ReadOnly: false    
+          # Image: wordpress@sha256:7c33c72f1aba217fd5554d5dbc7dbad3274962c5602da353a6196db1241cd05a
+          # Environment:    
+            # - Name: WORDPRESS_DB_NAME
+            #   Value: northwind
+            # - Name: WORDPRESS_CONFIG_EXTRA
+            #   Value: !Sub
+            #     - define( 'WP_HOME', '${Url}' ); define( 'WP_SITEURL', '${Url}' ); define('WP_ALLOW_MULTISITE', true ); define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
+            #     - Url: !Ref LoadBalancerUrl
+            # - Name: WORDPRESS_DB_HOST
+            #   Value: !Ref DatabaseEndpointAddress           
+            # - Name: WORDPRESS_DB_USER
+            #   Value: !Ref DBUsername
+            # - Name: WORDPRESS_DB_PASSWORD
+            #   Value: !Ref DBPassword
+          # MountPoints:
+          #   - SourceVolume: EFS
+          #     ContainerPath: /var/www/html
+          #     ReadOnly: false  
+          LinuxParameters:
+            InitProcessEnabled: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: wp
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+              Protocol: tcp            
+      Volumes:
+        - Name: EFS
+          EFSVolumeConfiguration: 
+            FilesystemId: !Ref EFSFileSystem
+            RootDirectory: /
+            AuthorizationConfig:
+              AccessPointId: !Ref EFSAccessPoint
+            TransitEncryption: ENABLED
+      Cpu: '512'
+      Memory: '1024'
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      Family: !Sub ${Namespace}-ECSTaskDefinition
+      NetworkMode: awsvpc
+      RequiresCompatibilities: [EC2, FARGATE]
+      TaskRoleArn: !Ref ECSTaskRole
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub ${Namespace}-ECSService
+      Cluster: !Ref Cluster
+      DesiredCount: 1
+      TaskDefinition: !Ref ECSTaskDefinition
+      # LaunchType: EC2
+      LaunchType: FARGATE
+      EnableExecuteCommand: true
+      HealthCheckGracePeriodSeconds: 300
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref ServiceSecurityGroup
+          Subnets: !Ref PrivateSubnetIds
+      LoadBalancers:
+        - ContainerName: lambdaorm
+          ContainerPort: 80
+          TargetGroupArn: !Ref LoadBalancerTargetGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-ECSService
+        - Key: Namespace
+          Value: !Ref Namespace    
+  ECSServiceAutoScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingRole]]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole
+  ECSServiceAutoScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingPolicy ] ]
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref ECSServiceAutoScalingTarget
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        TargetValue: 80
+  ECSServiceAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MinCapacity: 1
+      MaxCapacity: 2
+      ResourceId: !Join [ '/', [ service, !Ref Cluster, !GetAtt ECSService.Name ] ]
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      RoleARN: !GetAtt ECSServiceAutoScalingRole.Arn 
+Outputs:
+  ECSService:
+    Description: Name of the ECS service.
+    Value: !Ref ECSService
+  LoadBalancerUrl:
+    Description: URL of the load balancer.
+    Value: !Ref LoadBalancerUrl  

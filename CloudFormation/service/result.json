@@ -1,0 +1,14 @@
+[
+    [
+        {
+            "OutputKey": "ECSService",
+            "OutputValue": "arn:aws:ecs:eu-west-1:463621272105:service/lambdaorm-Cluster/lambdaorm-ECSService",
+            "Description": "Name of the ECS service."
+        },
+        {
+            "OutputKey": "LoadBalancerUrl",
+            "OutputValue": "http://lambdaorm-LB-632553115.eu-west-1.elb.amazonaws.com",
+            "Description": "URL of the load balancer."
+        }
+    ]
+]

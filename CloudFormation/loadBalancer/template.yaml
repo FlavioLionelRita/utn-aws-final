@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: Load Balancer stack
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  VPCId:
+    Type: AWS::EC2::VPC::Id
+    Description: Specify the VPC Id to deploy this to.
+  PublicSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of public subnet Ids.
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the security group to be used for the load balancer.
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${Namespace}-LB
+      Type: application
+      Scheme: internet-facing
+      Subnets: !Ref PublicSubnetIds
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-LB
+      - Key: Namespace
+        Value: !Ref Namespace  
+  LoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref VPCId
+      Port: 80
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-299,302
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      TargetType: ip
+      TargetGroupAttributes:
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-LB-TG
+      - Key: Namespace
+        Value: !Ref Namespace      
+  LoadBalancerHTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref LoadBalancerTargetGroup           
+Outputs:
+  LoadBalancerDNSName:
+    Description: Domain of the load balancer.
+    Value: !GetAtt LoadBalancer.DNSName
+  LoadBalancerUrl:
+    Description: Url of the load balancer.
+    Value: !Sub http://${LoadBalancer.DNSName}
+  LoadBalancerTargetGroup:
+    Description: Target group of the load balancer.
+    Value: !Ref LoadBalancerTargetGroup  

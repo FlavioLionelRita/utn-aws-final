@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::SecretsManager-2020-07-23
+Description: MySQL database stack
+Parameters:
+  Namespace:
+    Type: String
+    Description: namespace to be used as a prefix for all resources
+  PrivateSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Specify a list of private subnet Ids. Each private subnet must have been configured in different availability zones. Please, select only two subnets.
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Specify the database security group.
+  DBUsername:
+    NoEcho: 'true'
+    Description: The northwind database admin account username
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+  DBPassword:
+    NoEcho: 'true'
+    Description: The northwind database admin account password
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: "[a-zA-Z0-9]*"
+    ConstraintDescription: must contain only alphanumeric characters.
+  DatabaseInstanceClass:
+    Type: String
+    Description: Specify the database instance type.
+    AllowedValues: [ db.t2.micro, db.t3.micro, db.t4g.micro ]
+Resources:
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub ${Namespace}-Database-SNG
+      DBSubnetGroupDescription: !Sub ${Namespace} Database Subnet Group.
+      SubnetIds: !Ref PrivateSubnetIds
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-Database-SNG
+        - Key: Namespace
+          Value: !Ref Namespace
+  Database:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: MySQL
+      DBInstanceIdentifier: !Sub ${Namespace}-mysql 
+      DBName: northwind
+      DBInstanceClass: !Ref DatabaseInstanceClass      
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: '20'
+      MultiAZ: true
+      PubliclyAccessible: false
+      StorageEncrypted: false      
+      StorageType: gp2      
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-MySQL
+        - Key: Namespace
+          Value: !Ref Namespace
+Outputs:
+  DatabaseEndpointAddress:
+    Description: Connection endpoint for the database.
+    Value: !GetAtt Database.Endpoint.Address

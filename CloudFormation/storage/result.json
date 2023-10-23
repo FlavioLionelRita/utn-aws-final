@@ -1,0 +1,14 @@
+[
+    [
+        {
+            "OutputKey": "EFSAccessPoint",
+            "OutputValue": "fsap-01e5818537dc5d2ca",
+            "Description": "EFS access point."
+        },
+        {
+            "OutputKey": "EFSFileSystem",
+            "OutputValue": "fs-0503cb0ec5bf19d9c",
+            "Description": "EFS file system."
+        }
+    ]
+]
