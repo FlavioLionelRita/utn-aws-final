@@ -103,12 +103,12 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Name: lambdaorm
-          Image: flaviorita/lambdaorm-svc:0.7.15
+          Image: flaviorita/lambdaorm-svc:0.7.20
           Environment:
             - Name: NODE_ENV
               Value: production
             - Name: HOST
-              Value: http://0.0.0.0
+              Value: http://localhost
             - Name: PORT
               Value: '80'
             - Name: LIMIT_WINDOWS_MS
@@ -125,30 +125,12 @@ Resources:
               Value: northwind
             - Name: DB_USER
               Value: !Ref DBUsername
-            - Name: DB_PASSWORD
+            - Name: DB_PASSWORDp
               Value: !Ref DBPassword
           MountPoints:
             - SourceVolume: EFS
               ContainerPath: /workspace
-              ReadOnly: false    
-          # Image: wordpress@sha256:7c33c72f1aba217fd5554d5dbc7dbad3274962c5602da353a6196db1241cd05a
-          # Environment:    
-            # - Name: WORDPRESS_DB_NAME
-            #   Value: northwind
-            # - Name: WORDPRESS_CONFIG_EXTRA
-            #   Value: !Sub
-            #     - define( 'WP_HOME', '${Url}' ); define( 'WP_SITEURL', '${Url}' ); define('WP_ALLOW_MULTISITE', true ); define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
-            #     - Url: !Ref LoadBalancerUrl
-            # - Name: WORDPRESS_DB_HOST
-            #   Value: !Ref DatabaseEndpointAddress           
-            # - Name: WORDPRESS_DB_USER
-            #   Value: !Ref DBUsername
-            # - Name: WORDPRESS_DB_PASSWORD
-            #   Value: !Ref DBPassword
-          # MountPoints:
-          #   - SourceVolume: EFS
-          #     ContainerPath: /var/www/html
-          #     ReadOnly: false  
+              ReadOnly: false
           LinuxParameters:
             InitProcessEnabled: true
           LogConfiguration:

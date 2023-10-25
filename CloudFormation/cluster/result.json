@@ -7,7 +7,7 @@
         },
         {
             "OutputKey": "EC2CapacityProvider",
-            "OutputValue": "lambdaorm-cluster-EC2CapacityProvider-8QJb8s6tZRDx",
+            "OutputValue": "lambdaorm-cluster-EC2CapacityProvider-XGvHAPvtJflx",
             "Description": "Name of the EC2 capacity provider."
         },
         {

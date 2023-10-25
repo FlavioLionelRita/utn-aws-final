@@ -2,22 +2,22 @@
     [
         {
             "OutputKey": "LoadBalancerSecurityGroup",
-            "OutputValue": "sg-0befc2e06668dcfc5",
+            "OutputValue": "sg-0057fd1d99e6a5455",
             "Description": "Load Balancer Security Group."
         },
         {
             "OutputKey": "EC2SecurityGroup",
-            "OutputValue": "sg-077f939975e931503",
+            "OutputValue": "sg-0d9a2cbeb99fb3c96",
             "Description": "EC2 Security Group."
         },
         {
             "OutputKey": "DatabaseSecurityGroup",
-            "OutputValue": "sg-002118ea691e78959",
+            "OutputValue": "sg-05500994789bf6fe9",
             "Description": "Database Security Group."
         },
         {
             "OutputKey": "ServiceSecurityGroup",
-            "OutputValue": "sg-0e04a0b641f4e3706",
+            "OutputValue": "sg-08cd97a27da6ef842",
             "Description": "Service Security Group."
         }
     ]

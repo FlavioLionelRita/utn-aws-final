@@ -1,0 +1,169 @@
+timestamp,message,logStreamName
+1698139446641,> orm-service@0.7.18 start,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139446641,> node index.js,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448251,2023-10-24T09:24:08.249Z ERROR: Schema: /workspace not supported,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,node:events:495,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,      throw er; // Unhandled 'error' event,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,      ^,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at listenInCluster (node:net:1865:12),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at Server.listen (node:net:1953:7),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at Generator.next (<anonymous>),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,Emitted 'error' event on Server instance at:,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,"  code: 'EACCES',",wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,"  errno: -13,",wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,"  syscall: 'listen',",wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,"  address: '0.0.0.0',",wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,  port: 80,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,},wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448432,Node.js v18.18.2,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448451,npm notice ,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448451,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448451,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448452,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139448452,npm notice ,wp/lambdaorm/9d2596b4241648be82b4b2c8408ae890
+1698139511699,> orm-service@0.7.18 start,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139511699,> node index.js,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513521,2023-10-24T09:25:13.520Z ERROR: Schema: /workspace not supported,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,node:events:495,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,      throw er; // Unhandled 'error' event,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,      ^,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at listenInCluster (node:net:1865:12),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at Server.listen (node:net:1953:7),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at Generator.next (<anonymous>),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,Emitted 'error' event on Server instance at:,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,"  code: 'EACCES',",wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,"  errno: -13,",wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,"  syscall: 'listen',",wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,"  address: '0.0.0.0',",wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,  port: 80,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,},wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513667,Node.js v18.18.2,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513674,npm notice ,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513674,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513675,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513675,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139513675,npm notice ,wp/lambdaorm/322ffc8e516f44ee9c1e5ad11e96c121
+1698139823928,> orm-service@0.7.18 start,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139823928,> node index.js,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825631,2023-10-24T09:30:25.630Z ERROR: Schema: /workspace not supported,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,node:events:495,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,      throw er; // Unhandled 'error' event,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,      ^,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at listenInCluster (node:net:1865:12),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at Server.listen (node:net:1953:7),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at Generator.next (<anonymous>),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,Emitted 'error' event on Server instance at:,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,"  code: 'EACCES',",wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,"  errno: -13,",wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,"  syscall: 'listen',",wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,"  address: '0.0.0.0',",wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,  port: 80,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,},wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825803,Node.js v18.18.2,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825822,npm notice ,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825823,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825823,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825823,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139825824,npm notice ,wp/lambdaorm/239fcb49621f49f78c99089d82310742
+1698139927083,> orm-service@0.7.18 start,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139927083,> node index.js,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928784,2023-10-24T09:32:08.783Z ERROR: Schema: /workspace not supported,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,node:events:495,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,      throw er; // Unhandled 'error' event,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,      ^,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at listenInCluster (node:net:1865:12),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at Server.listen (node:net:1953:7),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at Generator.next (<anonymous>),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,Emitted 'error' event on Server instance at:,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,"  code: 'EACCES',",wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,"  errno: -13,",wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,"  syscall: 'listen',",wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,"  address: '0.0.0.0',",wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,  port: 80,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,},wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928930,Node.js v18.18.2,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928963,npm notice ,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928964,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928964,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928965,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698139928965,npm notice ,wp/lambdaorm/79fc300330844135aea6368c1cd84f2b
+1698140241371,> orm-service@0.7.18 start,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140241371,> node index.js,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140242884,2023-10-24T09:37:22.880Z ERROR: Schema: /workspace not supported,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,node:events:495,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,      throw er; // Unhandled 'error' event,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,      ^,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at listenInCluster (node:net:1865:12),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at Server.listen (node:net:1953:7),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at Generator.next (<anonymous>),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,Emitted 'error' event on Server instance at:,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,"  code: 'EACCES',",wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,"  errno: -13,",wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,"  syscall: 'listen',",wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,"  address: '0.0.0.0',",wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,  port: 80,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,},wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243050,Node.js v18.18.2,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243069,npm notice ,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243069,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243069,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243069,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140243069,npm notice ,wp/lambdaorm/565bbb7d317d4b6480f27a6edb473d43
+1698140346717,> orm-service@0.7.18 start,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140346717,> node index.js,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348306,2023-10-24T09:39:08.305Z ERROR: Schema: /workspace not supported,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,node:events:495,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,      throw er; // Unhandled 'error' event,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,      ^,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,Error: listen EACCES: permission denied 0.0.0.0:80,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at Server.setupListenHandle [as _listen2] (node:net:1800:21),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at listenInCluster (node:net:1865:12),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at Server.listen (node:net:1953:7),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at Server.<anonymous> (/usr/src/app/infrastructure/server.js:73:65),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at Generator.next (<anonymous>),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at fulfilled (/usr/src/app/infrastructure/server.js:5:58),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,Emitted 'error' event on Server instance at:,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at emitErrorNT (node:net:1844:8),wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,"  code: 'EACCES',",wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,"  errno: -13,",wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,"  syscall: 'listen',",wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,"  address: '0.0.0.0',",wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,  port: 80,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,},wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348490,Node.js v18.18.2,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348504,npm notice ,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348504,npm notice New major version of npm available! 9.8.1 -> 10.2.1,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348504,npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.2.1>,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348504,npm notice Run `npm install -g npm@10.2.1` to update!,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74
+1698140348504,npm notice ,wp/lambdaorm/947b446b2ff748be92dccb31fa52ed74

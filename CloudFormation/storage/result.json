@@ -2,12 +2,12 @@
     [
         {
             "OutputKey": "EFSAccessPoint",
-            "OutputValue": "fsap-01e5818537dc5d2ca",
+            "OutputValue": "fsap-0dd35aba2a97bbf5a",
             "Description": "EFS access point."
         },
         {
             "OutputKey": "EFSFileSystem",
-            "OutputValue": "fs-0503cb0ec5bf19d9c",
+            "OutputValue": "fs-05fb34b07aa9ace05",
             "Description": "EFS file system."
         }
     ]

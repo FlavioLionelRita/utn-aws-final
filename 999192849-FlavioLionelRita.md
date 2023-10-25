@@ -1,7 +1,14 @@
+<style>
+  pre {
+    font-size: 0.7em;
+  }
+</style>
+
 # Trabajo Practico Final Integrador
 
 **Curso:** AWS Cloud Computing (999192849) \
-**Alumno:** Flavio Lionel Rita
+**Alumno:** Flavio Lionel Rita \
+**Source code:** [github](https://github.com/FlavioLionelRita/utn-aws-final)
 
 ## Objetivo
 
@@ -11,34 +18,21 @@ Con el fin de:
 - Mostrar el servicio de [λORM](https://www.npmjs.com/package/lambdaorm)  a terceros
 - Hacer pruebas de performance
 
-Como esto es un laboratorio para ser mostrado temporalmente, se precisa poder levantar y bajar la infraestructura de forma automatizada. \
-Por este motivo se utilizara CloudFormation para levantar la infraestructura. \
-Se crearan tareas de automatización para ejecutar scripts para inicializar la base de datos y copiar el schema de [λORM](https://www.npmjs.com/package/lambdaorm) desde un bucket de S3 al volumen del contenedor en EFS.
+Como esto es un laboratorio para ser mostrado temporalmente, se precisa poder levantar y bajar la infraestructura de forma sencilla y rápida. \
+Por este motivo se realizara:
+
+- creación de templates de CloudFormation.
+- creación de un script para:
+  - automatizar la ejecución de los templates de CloudFormation.
+  - ejecutar scripts para inicializar la base de datos
+  - copiar el schema de [λORM](https://www.npmjs.com/package/lambdaorm) al volume de la imagen del servicio [lambdaorm-svc](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general)
+- creación un script para eliminar todos los recursos creados.
 
 ### [λORM](https://www.npmjs.com/package/lambdaorm)
 
-Es un ORM escrito en Node.js que basa sus consultas en un modelo de dominio, abstrayéndose del modelo físico. \
-Mediante reglas se determina la Fuente de Datos correspondiente y mediante definición de mapeo se define cómo se mapea el modelo de dominio con el físico.
+Es un ORM escrito en Node.js el cual puede ser consumido como un servicio mediante la imagen [lambdaorm-svc](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general)
 
-Lo que diferencia a λORM de otros ORM:
-
-- Obtener o modificar registros de diferentes Bases de Datos en una misma consulta.
-  Estas Bases de Datos pueden ser de diferentes motores (Ejemplo: MySQL, PostgreSQL, MongoDB, etc.)
-
-- Abstracción del modelo físico, siendo lo mismo trabajar con una única base de datos que con varias.
-
-- Definir diferentes stages para un modelo de dominio.
-  Puedes definir un stage donde trabajes con una instancia de MySQL y otro stage donde trabajes con Oracle y MongoDB.
-
-- Sintaxis de consulta amigable, pudiendo escribir en el propio lenguaje de programación como en una cadena.
-  Las expresiones se analizan de la misma manera que con un lenguaje de expresión.
-
-- Puede ser consumido de diferentes maneras:
-  - Como un paquete de Node.js
-  - Como un servicio REST
-  - Como CLI
-  - Como un Cliente de Servicio REST en Node.js
-  - Como un Cliente de Servicio REST en Kotlin
+![npm](./Images/lambdaorm-npm.png)
 
 ## Solución
 
@@ -52,16 +46,21 @@ Lo que diferencia a λORM de otros ORM:
 | Amazon Virtual Private Cloud (VPC)        | Servicio que le permite aprovisionar una sección de la nube de AWS aislada lógicamente donde puede ejecutar recursos de AWS.  |
 | Amazon Elastic Container Service (ECS)    | Servicio de orquestación de contenedores altamente escalable y de alto rendimiento que admite contenedores de Docker          |
 | Amazon Elastic Compute Cloud (EC2)        | Servicio web que proporciona capacidad informática segura y de tamaño modificable en la nube.                                 |
-| Amazon Identity and Access Management     | Proporciona seguridad para controlar el acceso y los privilegios de los usuarios a los recursos de AWS.                       |
 | Amazon Elastic File System (EFS)          | Proporciona un almacenamiento de archivos sencillo, escalable y elástico para casos de uso de Linux para la nube.             |
 | Amazon Relational Database Service (RDS)  | Facilita la configuración, el funcionamiento y el escalado de las bases de datos relacionales en la nube.                     |
-| Amazon Simple Storage Service (S3)        | Servicio de almacenamiento de objetos que ofrece escalabilidad, disponibilidad de datos, seguridad y rendimiento              |
 | Amazon CloudWatch                         | Servicio de supervisión y observación integral para recursos en la nube y aplicaciones en ejecución en AWS.                   |
 | Amazon CloudWatch Logs                    | Servicio para monitorear y diagnosticar aplicaciones y sistemas en tiempo real.                                               |
-| Amazon Lambda                             | Servicio informático sin servidor que le permite ejecutar código sin aprovisionar ni administrar servidores.                  |
 | Amazon Load Balancer (ALB)                | Distribuye el tráfico de entrada a varias aplicaciones o contenedores en función de las reglas de enrutamiento                |
 
 ## Costos
+
+Resumen:
+
+![resumen](./Images/costos-resumen.png)
+
+Costos por servicio (actualmente ahorro utilizando credito):
+
+![costos por servicio](./Images/costos-por-service.png)
 
 | Servicio                                  | Costo Diario              | Costo Mensual                 | Detalle del Calculo                                   |
 | ----------------------------------------- | ------------------------- | ----------------------------- | ----------------------------------------------------- |
@@ -69,17 +68,24 @@ Lo que diferencia a λORM de otros ORM:
 | Amazon Virtual Private Cloud (VPC)        | $0.00                     | $0.00                         |                                                       |
 | Amazon Elastic Container Service (ECS)    | $0.00                     | $0.00                         |                                                       |
 | Amazon Elastic Compute Cloud (EC2)        | $0.00                     | $0.00                         |                                                       |
-| Amazon Identity and Access Management     | $0.00                     | $0.00                         |                                                       |
 | Amazon Elastic File System (EFS)          | $0.00                     | $0.00                         |                                                       |
 | Amazon Relational Database Service (RDS)  | $0.00                     | $0.00                         |                                                       |
-| Amazon Simple Storage Service (S3)        | $0.00                     | $0.00                         |                                                       |
 | Amazon CloudWatch                         | $0.00                     | $0.00                         |                                                       |
 | Amazon CloudWatch Logs                    | $0.00                     | $0.00                         |                                                       |
-| Amazon Lambda                             | $0.00                     | $0.00                         |                                                       |
 | Amazon Load Balancer (ALB)                | $0.00                     | $0.00                         |                                                       |
 | **Total**                                 | **$0.00**                 | **$0.00**                     |                                                       |
 
 ## Implementación
+
+Cloud Formation Templates:
+
+![cloud formation stacks](./Images/CloudFormation-stacks.png)
+
+Servicio de LambdaORM desplegado en AWS utilizando ECS:
+
+![swagger](./Images/lambdaorm-svc-swagger.png)
+
+Nota: Por cuestiones de espacio solo se incluirá la sección de resources de los templates de CloudFormation, pero se puede acceder al código completo en el repositorio [https://github.com/FlavioLionelRita/utn-aws-final](https://github.com/FlavioLionelRita/utn-aws-final)
 
 ### Configuración Inicial
 
@@ -94,122 +100,766 @@ Lo que diferencia a λORM de otros ORM:
   - La subred pública debe tener una puerta de enlace NAT adjunta.
   - La subred privada debe enrutar el tráfico de Internet a través de la puerta de enlace NAT adjunta en la subred pública.
 
-**Resources Created:**
+![vpc](./Images/vpc.png)
+
+Template:
+
+```yaml
+Resources:
+  VPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.2.0.0/16
+      InstanceTenancy: default
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  InternetGateway:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-IG'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  InternetGatewayAttachment:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+  PublicRouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubRT'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  DefaultPublicRoute:
+    DependsOn:
+      - InternetGatewayAttachment
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.2.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN1'
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VPC
+  PublicSubnet1RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
+  PublicSubnet1ElasticIP:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN1-NG-EIP'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PublicSubnet1NatGateway:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt PublicSubnet1ElasticIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN1-NG'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PublicSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: 10.2.1.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN2'
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VPC
+  PublicSubnet2RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet2
+  PublicSubnet2ElasticIP:
+    Type: 'AWS::EC2::EIP'
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN2-NG-EIP'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PublicSubnet2NatGateway:
+    Type: 'AWS::EC2::NatGateway'
+    Properties:
+      AllocationId: !GetAtt PublicSubnet2ElasticIP.AllocationId
+      SubnetId: !Ref PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PubSN2-NG'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PrivateSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.2.2.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PrivSN1'
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VPC
+  PrivateSubnet1RouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PrivSN1-RT'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PrivateSubnet1RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      SubnetId: !Ref PrivateSubnet1
+  RouteToPublicSubnet1NatGateway:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet1NatGateway
+  PrivateSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: 10.2.3.0/24
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PrivSN2'
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VPC
+  PrivateSubnet2RouteTable:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub '${Namespace}-VPC-PrivSN2-RT'
+        - Key: Namespace
+          Value: !Ref Namespace  
+  PrivateSubnet2RouteTableAssociation:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      SubnetId: !Ref PrivateSubnet2
+  RouteToPublicSubnet2NatGateway:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref PublicSubnet2NatGateway
+```
 
 ### Security Groups
 
-**Create:**
+Template:
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./securityGroups/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./securityGroups/.env) --stack-name lambdaorm-security-groups
+```yaml
+Resources:
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access via port 80 and SSH access via port 22
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EC2SecurityGroup
+        - Key: Namespace
+          Value: !Ref Namespace  
+  ServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-ECSService-SG
+      GroupDescription: !Sub ${Namespace} ECS Service Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from LoadBalancerSecurityGroup on port 80.
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-ECS-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-Database-SG
+      GroupDescription: !Sub ${Namespace} Database Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from ServiceSecurityGroup on port 3306.
+          IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref ServiceSecurityGroup
+        - Description : Allow traffic from EC2 on port 3306.
+          IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref EC2SecurityGroup     
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-Database-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-LB-SG
+      GroupDescription: !Sub ${Namespace} Load Balancer Security Group.
+      SecurityGroupIngress:
+        - Description: Allow traffic from the internet on port 80.
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-LB-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
 ```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
 
 ### Database
 
-**Create:**
+![rds](./Images/rds.png)
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./database/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./database/.env) --stack-name lambdaorm-database
+Template:
+
+```yaml
+Resources:
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub ${Namespace}-Database-SNG
+      DBSubnetGroupDescription: !Sub ${Namespace} Database Subnet Group.
+      SubnetIds: !Ref PrivateSubnetIds
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-Database-SNG
+        - Key: Namespace
+          Value: !Ref Namespace
+  Database:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: MySQL
+      DBInstanceIdentifier: !Sub ${Namespace}-mysql 
+      DBName: northwind
+      DBInstanceClass: !Ref DatabaseInstanceClass      
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: '20'
+      MultiAZ: true
+      PubliclyAccessible: false
+      StorageEncrypted: false      
+      StorageType: gp2      
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-MySQL
+        - Key: Namespace
+          Value: !Ref Namespace
 ```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
 
 ### Load Balancer
 
-**Create:**
+![load-balancer](./Images/load-balancer.png)
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./loadBalancer/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./loadBalancer/.env) --stack-name lambdaorm-load-balancer
+Template:
+
+```yaml
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${Namespace}-LB
+      Type: application
+      Scheme: internet-facing
+      Subnets: !Ref PublicSubnetIds
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-LB
+      - Key: Namespace
+        Value: !Ref Namespace  
+  LoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId: !Ref VPCId
+      Port: 80
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-299,302
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      TargetType: ip
+      TargetGroupAttributes:
+        - Key: stickiness.enabled
+          Value: 'true'
+        - Key: stickiness.type
+          Value: lb_cookie
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-LB-TG
+      - Key: Namespace
+        Value: !Ref Namespace      
+  LoadBalancerHTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref LoadBalancerTargetGroup 
 ```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
 
 ### Storage
 
-**Create:**
+![efs](./Images/efs.png)
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./storage/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./storage/.env) --stack-name lambdaorm-storage
+Template:
+
+```yaml
+Resources:
+  EFSMountTargetSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${Namespace}-EFS-MT-SG
+      GroupDescription: !Sub ${Namespace} Service EFS Mount Target Security Group.
+      SecurityGroupIngress:
+        - Description : Allow traffic from ServiceSecurityGroup on port 2049.
+          IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId: !Ref ServiceSecurityGroup
+        - Description : Allow traffic from EC2SecurityGroup on port 2049.
+          IpProtocol: tcp
+          FromPort: 2049
+          ToPort: 2049
+          SourceSecurityGroupId: !Ref EC2SecurityGroup  
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EFS-MT-SG
+        - Key: Namespace
+          Value: !Ref Namespace  
+      VpcId: !Ref VpcId
+  EFSFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      Encrypted: false
+      FileSystemTags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EFS
+      BackupPolicy:
+        Status:  DISABLED
+      PerformanceMode: generalPurpose
+      ThroughputMode: bursting       
+  EFSMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !Select [ 0, !Ref PrivateSubnetIds ]
+      SecurityGroups:
+        - !Ref EFSMountTargetSecurityGroup
+  EFSMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref EFSFileSystem
+      SubnetId: !Select [ 1, !Ref PrivateSubnetIds ]
+      SecurityGroups:
+        - !Ref EFSMountTargetSecurityGroup
+  EFSAccessPoint:
+    Type: AWS::EFS::AccessPoint
+    Properties:
+      FileSystemId: !Ref EFSFileSystem 
 ```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
 
 ### Cluster
 
-- Se implementa un Cluster con contenedores de LambdaOrm en AWS Elastic Container Service (ECS).
-- Estos contenedores se conectan a:
-  - Elastic File System (EFS) para acceder al archivo de esquema de lambdaOrm
-  - Base de datos relacional (RDS) para almacenar los datos.
-- Requisitos:
-  - VPC con una puerta de enlace a Internet.
-  - Dos conjuntos de una subred privada y una subred pública que pertenece a diferentes zonas de disponibilidad.
-  - Cada subred pública debe tener una puerta de enlace NAT adjunta y la subred privada
-    en la zona de disponibilidad respectiva deben enrutar el tráfico de Internet a través de esa Puerta de enlace NAT.
-- Parámetros: se pasaran a traves de un archivo de variables de ambiente
+![cluster](./Images/ecs-cluster.png)
 
-**Create:**
+Template:
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./cluster/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./cluster/.env) --stack-name lambdaorm-cluster
+```yaml
+Resources:
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub /aws/ecs/${AWS::StackName}
+      RetentionInDays: 60
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    DependsOn: [ECSLogGroup]
+    Properties:
+      ClusterName: !Sub ${Namespace}-Cluster
+      ClusterSettings:
+      - Name: containerInsights
+        Value: enabled
+      Configuration:        
+        ExecuteCommandConfiguration:
+          LogConfiguration: 
+            CloudWatchEncryptionEnabled: false
+            CloudWatchLogGroupName: !Ref ECSLogGroup
+          Logging: OVERRIDE
+      ServiceConnectDefaults:
+        Namespace: !Ref Namespace
+      Tags:
+      - Key: Name
+        Value: !Sub ${Namespace}-Cluster
+      - Key: Namespace
+        Value: !Ref Namespace    
+  ECSAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn: [ECSCluster]
+    Properties:
+      VPCZoneIdentifier: !Ref SubnetIds
+      LaunchTemplate:
+        LaunchTemplateId: !Ref ECSLaunchTemplate
+        Version: !GetAtt ECSLaunchTemplate.LatestVersionNumber
+      MinSize: '0'
+      MaxSize: '5'
+      DesiredCapacity: '0'
+      NewInstancesProtectedFromScaleIn: true
+      Tags:
+      - Key: Name
+        PropagateAtLaunch: true
+        Value: !Sub ${Namespace}-Cluster-ECSInstance
+      - Key: Namespace
+        PropagateAtLaunch: true
+        Value: !Ref Namespace  
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: 'true'       
+  ECSLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    DependsOn: ECSCluster
+    Properties:
+      LaunchTemplateData:
+        ImageId: ami-0dab0800aa38826f2
+        InstanceType: t2.micro
+        KeyName: SSH
+        IamInstanceProfile:
+          Arn: arn:aws:iam::463621272105:instance-profile/ecsInstanceRole
+        UserData:
+          # This injected configuration file is how the EC2 instance
+          # knows which ECS cluster on your AWS account it should be joining
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config    
+  EC2CapacityProvider:
+    Type: AWS::ECS::CapacityProvider
+    Properties:
+      AutoScalingGroupProvider:
+        AutoScalingGroupArn: !Ref ECSAutoScalingGroup
+        ManagedScaling:
+          Status: ENABLED
+          InstanceWarmupPeriod: 60
+          MinimumScalingStepSize: 1
+          MaximumScalingStepSize: 100
+          TargetCapacity: 100
+        ManagedTerminationProtection: ENABLED
+  ClusterCPAssociation:
+    Type: AWS::ECS::ClusterCapacityProviderAssociations
+    DependsOn: ECSCluster
+    Properties:
+      Cluster: !Sub ${Namespace}-Cluster
+      CapacityProviders:
+      - FARGATE
+      - FARGATE_SPOT
+      - !Ref EC2CapacityProvider
+      DefaultCapacityProviderStrategy:
+      - Base: 0
+        Weight: 1
+        CapacityProvider: !Ref EC2CapacityProvider
 ```
-
-**Create Cluster:**
-
-```sh
-aws cloudformation deploy --template-file ./cluster/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./cluster/.env) --stack-name lambdaorm-cluster
-```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
-
-### Service
-
-**Create:**
-
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./service/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./service/.env) --stack-name lambdaorm-service
-```
-
-**Resources Created:**
-
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
 
 ### EC2
 
-**Create:**
+![ec2](./Images/ec2.png)
 
-```sh
-aws cloudformation deploy --region eu-west-1 --template-file ./ec2/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./ec2/.env) --stack-name lambdaorm-ec2
+Template:
+
+```yaml
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-047bb4163c506cd98 # ami-0dab0800aa38826f2       
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref EC2SecurityGroup
+          SubnetId: !Select [ 0, !Ref PublicSubnetIds ] 
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-EC2Instance
+        - Key: Namespace
+          Value: !Ref Namespace
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum install mysql -y
+          yum install -y amazon-efs-utils
+          mkdir /mnt/efs
+          mount -t efs -o tls ${EFSFileSystem}:/ /mnt/efs
+          mkdir /mnt/efs/workspace
+                
+  EC2Eth1:
+    Type: 'AWS::EC2::NetworkInterface'
+    Properties:
+      SubnetId: !Select [ 0, !Ref PrivateSubnetIds ] 
+      GroupSet:
+      - !Ref EC2SecurityGroup
+      Tags:
+      - Key: Name
+        Value: 'simple - host1 eth1'
+      - Key: Namespace
+        Value: !Ref Namespace  
+  EC2Eth1Attachment:
+    Type: 'AWS::EC2::NetworkInterfaceAttachment'
+    Properties:
+      DeleteOnTermination: true
+      DeviceIndex: '1'
+      NetworkInterfaceId: !Ref EC2Eth1
+      InstanceId: !Ref EC2Instance
 ```
 
-**Resources Created:**
+### Service
 
-| Logical Resource Id                       | Resource Type                           |
-| ----------------------------------------- | --------------------------------------- |
+![service](./Images/ecs-service.png)
 
-### Script de creación
+Template:
+
+```yaml
+Resources:
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Namespace}-ECSTaskExecutionRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${Namespace}-ECSTaskRole
+      Description: !Sub ${Namespace} ECS Task Role.
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+  ECSTaskRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub ${Namespace}-ECSTaskRolePolicy
+      Roles:
+        - !Ref ECSTaskRole
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - ssmmessages:CreateControlChannel
+              - ssmmessages:CreateDataChannel
+              - ssmmessages:OpenControlChannel
+              - ssmmessages:OpenDataChannel
+            Resource: '*'
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: lambdaorm
+          Image: flaviorita/lambdaorm-svc:0.7.20
+          Environment:
+            - Name: NODE_ENV
+              Value: production
+            - Name: HOST
+              Value: http://localhost
+            - Name: PORT
+              Value: '80'
+            - Name: LIMIT_WINDOWS_MS
+              Value: '10000'
+            - Name: LIMIT_MAX
+              Value: '10'
+            - Name: WORKSPACE
+              Value: /workspace
+            - Name: DB_HOST
+              Value: !Ref DatabaseEndpointAddress
+            - Name: DB_PORT
+              Value: '3306'
+            - Name: DB_NAME
+              Value: northwind
+            - Name: DB_USER
+              Value: !Ref DBUsername
+            - Name: DB_PASSWORDp
+              Value: !Ref DBPassword
+          MountPoints:
+            - SourceVolume: EFS
+              ContainerPath: /workspace
+              ReadOnly: false
+          LinuxParameters:
+            InitProcessEnabled: true
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref ECSLogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: wp
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+              Protocol: tcp            
+      Volumes:
+        - Name: EFS
+          EFSVolumeConfiguration: 
+            FilesystemId: !Ref EFSFileSystem
+            RootDirectory: /
+            AuthorizationConfig:
+              AccessPointId: !Ref EFSAccessPoint
+            TransitEncryption: ENABLED
+      Cpu: '512'
+      Memory: '1024'
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      Family: !Sub ${Namespace}-ECSTaskDefinition
+      NetworkMode: awsvpc
+      RequiresCompatibilities: [EC2, FARGATE]
+      TaskRoleArn: !Ref ECSTaskRole
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub ${Namespace}-ECSService
+      Cluster: !Ref Cluster
+      DesiredCount: 1
+      TaskDefinition: !Ref ECSTaskDefinition
+      # LaunchType: EC2
+      LaunchType: FARGATE
+      EnableExecuteCommand: true
+      HealthCheckGracePeriodSeconds: 300
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref ServiceSecurityGroup
+          Subnets: !Ref PrivateSubnetIds
+      LoadBalancers:
+        - ContainerName: lambdaorm
+          ContainerPort: 80
+          TargetGroupArn: !Ref LoadBalancerTargetGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namespace}-ECSService
+        - Key: Namespace
+          Value: !Ref Namespace    
+  ECSServiceAutoScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingRole]]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole
+  ECSServiceAutoScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Join [ '', [ !GetAtt ECSService.Name, AutoScalingPolicy ] ]
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref ECSServiceAutoScalingTarget
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        TargetValue: 80
+  ECSServiceAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MinCapacity: 1
+      MaxCapacity: 2
+      ResourceId: !Join [ '/', [ service, !Ref Cluster, !GetAtt ECSService.Name ] ]
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      RoleARN: !GetAtt ECSServiceAutoScalingRole.Arn 
+```
+
+### Scripts
+
+Script de creación:
 
 ```sh
+Namespace=lambdaorm
+DBUsername=northwind
+DBPassword=northwind
 # Network
 cat <<EOF > ./network/.env
-Namespace=lambdaorm
+Namespace=${Namespace}
 EOF
 aws cloudformation deploy --region eu-west-1 --template-file ./network/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND  --parameter-overrides $(cat ./network/.env) --stack-name lambdaorm-network &&
 aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-network'][].Outputs" --no-paginate --output json > ./network/result.json &&
@@ -227,8 +877,8 @@ cat <<EOF > ./database/.env
 Namespace=lambdaorm
 PrivateSubnetIds=$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet1") | .OutputValue'  ./network/result.json),$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet2") | .OutputValue'  ./network/result.json)
 DatabaseSecurityGroup=$(jq -r '.[][] | select(.OutputKey=="DatabaseSecurityGroup") | .OutputValue'  ./securityGroups/result.json)
-DBUsername=northwind
-DBPassword=northwind
+DBUsername=${DBUsername}
+DBPassword=${DBPassword}
 DatabaseInstanceClass=db.t3.micro
 EOF
 aws cloudformation deploy --template-file ./database/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./database/.env) --stack-name lambdaorm-database  &&
@@ -260,23 +910,6 @@ SubnetIds=$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet1") | .OutputValue' 
 EOF
 aws cloudformation deploy --region eu-west-1 --template-file ./cluster/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./cluster/.env) --stack-name lambdaorm-cluster &&
 aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-cluster'][].Outputs" --no-paginate --output json > ./cluster/result.json  &&
-# Service
-cat <<EOF > ./service/.env
-Namespace=lambdaorm
-PrivateSubnetIds=$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet1") | .OutputValue'  ./network/result.json),$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet2") | .OutputValue'  ./network/result.json)
-Cluster=$(jq -r '.[][] | select(.OutputKey=="ECSCluster") | .OutputValue'  ./cluster/result.json)
-ServiceSecurityGroup=$(jq -r '.[][] | select(.OutputKey=="ServiceSecurityGroup") | .OutputValue'  ./securityGroups/result.json)
-LoadBalancerUrl=$(jq -r '.[][] | select(.OutputKey=="LoadBalancerUrl") | .OutputValue'  ./loadBalancer/result.json)
-LoadBalancerTargetGroup=$(jq -r '.[][] | select(.OutputKey=="LoadBalancerTargetGroup") | .OutputValue'  ./loadBalancer/result.json)
-EFSAccessPoint=$(jq -r '.[][] | select(.OutputKey=="EFSAccessPoint") | .OutputValue'  ./storage/result.json)
-EFSFileSystem=$(jq -r '.[][] | select(.OutputKey=="EFSFileSystem") | .OutputValue'  ./storage/result.json)
-ECSLogGroup=$(jq -r '.[][] | select(.OutputKey=="ECSLogGroup") | .OutputValue'  ./cluster/result.json)
-DatabaseEndpointAddress=$(jq -r '.[][] | select(.OutputKey=="DatabaseEndpointAddress") | .OutputValue'  ./database/result.json)
-DBUsername=northwind
-DBPassword=northwind
-EOF
-aws cloudformation deploy --template-file ./service/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./service/.env) --stack-name lambdaorm-service  &&
-aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-service'][].Outputs" --no-paginate --output json > ./service/result.json &&
 # EC2
 cat <<EOF > ./ec2/.env
 Namespace=lambdaorm
@@ -289,13 +922,40 @@ EFSFileSystem=$(jq -r '.[][] | select(.OutputKey=="EFSFileSystem") | .OutputValu
 EOF
 aws cloudformation deploy --region eu-west-1 --template-file ./ec2/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./ec2/.env) --stack-name lambdaorm-ec2 &&
 aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-ec2'][].Outputs" --no-paginate --output json > ./ec2/result.json
+# Initialize Database and copy lambdaORM.yaml
+EC2PublicDnsName=$(jq -r '.[][] | select(.OutputKey=="EC2PublicDnsName") | .OutputValue'  ./ec2/result.json)
+DatabaseEndpointAddress=$(jq -r '.[][] | select(.OutputKey=="DatabaseEndpointAddress") | .OutputValue'  ./database/result.json)
+chmod 400 ./ec2/SSH.pem
+scp -i ./ec2/SSH.pem ../workspace/northwind-mysql.sql ec2-user@${EC2PublicDnsName}:/home/ec2-user
+scp -i ./ec2/SSH.pem ../workspace/lambdaORM.yaml ec2-user@${EC2PublicDnsName}:/home/ec2-user
+ssh -i ./ec2/SSH.pem ec2-user@${EC2PublicDnsName}
+mysql -h ${DatabaseEndpointAddress} -u ${DBUsername} -p${DBPassword} northwind < northwind-mysql.sqlc
+# mysql -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -pnorthwind northwind < northwind-mysql.sql
+exit
+# Service
+cat <<EOF > ./service/.env
+Namespace=lambdaorm
+PrivateSubnetIds=$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet1") | .OutputValue'  ./network/result.json),$(jq -r '.[][] | select(.OutputKey=="PrivateSubnet2") | .OutputValue'  ./network/result.json)
+Cluster=$(jq -r '.[][] | select(.OutputKey=="ECSCluster") | .OutputValue'  ./cluster/result.json)
+ServiceSecurityGroup=$(jq -r '.[][] | select(.OutputKey=="ServiceSecurityGroup") | .OutputValue'  ./securityGroups/result.json)
+LoadBalancerUrl=$(jq -r '.[][] | select(.OutputKey=="LoadBalancerUrl") | .OutputValue'  ./loadBalancer/result.json)
+LoadBalancerTargetGroup=$(jq -r '.[][] | select(.OutputKey=="LoadBalancerTargetGroup") | .OutputValue'  ./loadBalancer/result.json)
+EFSAccessPoint=$(jq -r '.[][] | select(.OutputKey=="EFSAccessPoint") | .OutputValue'  ./storage/result.json)
+EFSFileSystem=$(jq -r '.[][] | select(.OutputKey=="EFSFileSystem") | .OutputValue'  ./storage/result.json)
+ECSLogGroup=$(jq -r '.[][] | select(.OutputKey=="ECSLogGroup") | .OutputValue'  ./cluster/result.json)
+DatabaseEndpointAddress=$(jq -r '.[][] | select(.OutputKey=="DatabaseEndpointAddress") | .OutputValue'  ./database/result.json)
+DBUsername=${DBUsername}
+DBPassword=${DBPassword}
+EOF
+aws cloudformation deploy --template-file ./service/template.yaml --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides $(cat ./service/.env) --stack-name lambdaorm-service  &&
+aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-service'][].Outputs" --no-paginate --output json > ./service/result.json
 ```
 
-### Script de borrado
+Script de borrado:
 
 ```sh
-aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-ec2 && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-ec2 &&
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-service && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-service &&
+aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-ec2 && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-ec2 &&
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-cluster && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-cluster &&
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-storage && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-storage &&
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-load-balancer && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-load-balancer &&
@@ -304,101 +964,36 @@ aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-securi
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-network && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-network
 ```
 
-## Inicializar base de datos
+### Test
 
-**copy and execute sql initialization:**
-
-```sh
-chmod 400 ./ec2/SSH.pem
-scp -i ./ec2/SSH.pem ../workspace/northwind-mysql.sql ec2-user@ec2-54-170-226-72.eu-west-1.compute.amazonaws.com:/home/ec2-user
-scp -i ./ec2/SSH.pem ../workspace/lambdaORM.yaml ec2-user@ec2-54-170-226-72.eu-west-1.compute.amazonaws.com:/home/ec2-user
-ssh -i ./ec2/SSH.pem ec2-user@ec2-54-170-226-72.eu-west-1.compute.amazonaws.com
-sudo mv ./lambdaORM.yaml /mnt/efs/workspace/lambdaORM.yaml
-mysql -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -pnorthwind northwind < northwind-mysql.sql
-exit
-# verify
-# mysql -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -pnorthwind northwind
-# use northwind;
-# show tables;
-# select count(1) from Orders;
-# exit
-
-
-**Conectarse a la instancia EC2:**
-
-```bash
-chmod 400 ./ec2/SSH.pem
-## connect to EC2 instance
-ssh -i ./ec2/SSH.pem ec2-user@ec2-34-244-253-27.eu-west-1.compute.amazonaws.com -y
-## install mysql client
-sudo yum install mysql -y
-## connect to RDS instance from EC2 instance
-mysql -u northwind -pnorthwind -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com
-
-```
-
-**Asociar EFS a EC2:**
-
-```sh
-sudo yum install -y amazon-efs-utils
-sudo mkdir /mnt/efs
-sudo mount -t efs -o tls fs-0503cb0ec5bf19d9c:/ /mnt/efs
-#verify
-df -h
-cd /mnt/efs
-```
-
-**Create northwind database:**
-
-```sql
-CREATE USER IF NOT EXISTS 'northwind'@'%' IDENTIFIED BY 'northwind';
-CREATE DATABASE IF NOT EXISTS northwind;
-GRANT ALL PRIVILEGES on northwind.* To northwind@'%';
-FLUSH PRIVILEGES;
-SHOW databases;
-exit;
-```
-
-**Verify connection to northwind:**
-
-```sh
-mysql -u northwind -p -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com
-northwind
-SHOW databases;
-exit;
-```
-
-**copy and execute sql initialization:**
-
-```sh
-scp -i ./ec2/SSH.pem ./workspace/northwind-mysql.sql ec2-user@ec2-34-247-92-153.eu-west-1.compute.amazonaws.com:/home/ec2-user
-ssh -i ./ec2/SSH.pem ec2-user@ec2-34-247-92-153.eu-west-1.compute.amazonaws.com
-mysql -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -p northwind < northwind-mysql.sql
-northwind
-# verify
-mysql -u northwind -p -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com
-northwind
-use northwind;
-show tables;
-select count(1) from Orders;
-exit;
-```
+![ping](./Images/lambda-svc-ping.png)
 
 ## Pendientes
 
-### Automatización de Tareas
-
+- Administrar las credenciales de la base de datos utilizando **Secrets Manager**
+- Exponer el servicio con HTTPS
 - Crear lambda que se ejecute cuando se suba un schema a un bucket de S3 especifico y lo copie al EFS.
 - Crear lambda que se ejecute cuando se suba un script de SQL a un bucket de S3 especifico y lo ejecute en la base de datos.
 
 ## References
 
-- AWS
-  - EC2
-    - [Create key pairs](https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#KeyPairs:)
-    - [Install MySql Client](https://muleif.medium.com/how-to-install-mysql-on-amazon-linux-2023-5d39afa5bf11)
-  - Cluster  
-    - [ECS example](https://github.com/jquirossoto/wordpress-multisite-ecs-efs-rds/blob/master/README.md)
+- EC2
+  - [Create key pairs](https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#KeyPairs:)
+  - [Install MySql Client](https://muleif.medium.com/how-to-install-mysql-on-amazon-linux-2023-5d39afa5bf11)
+- ECS:
+  - [Cluster example](https://github.com/jquirossoto/wordpress-multisite-ecs-efs-rds/blob/master/README.md)
+  - [fargate example](https://github.com/1Strategy/fargate-cloudformation-example/blob/master/fargate.yaml)
+- Create Cluster with EC2 instances:
+  - [YouTube crea un cluster por consola web](https://www.youtube.com/watch?v=2LXeOACB1NM)
+  - [Cluster with EC2 Capacity Provider](https://containersonaws.com/pattern/ecs-ec2-capacity-provider-scaling)
+  - [ECS cluster](https://templates.cloudonaut.io/en/stable/ecs/#ecs-cluster-cost-optimzed)
+  - [Example](https://raw.githubusercontent.com/aws-observability/aws-otel-collector/main/deployment-template/ecs/aws-otel-ec2-sidecar-deployment-cfn.yaml)
+  - [ECS EC2 Cloudformation Template](https://aws-otel.github.io/docs/setup/ecs/cfn-for-ecs-ec2)
+  - [Managing compute for Amazon ECS clusters with capacity providers](https://aws.amazon.com/blogs/containers/managing-compute-for-amazon-ecs-clusters-with-capacity-providers/)
+  - [Deploying to AWS ECS Using Cloudformation and Spot Instances](https://www.jasonneurohr.com/articles/deploying-to-aws-ecs-using-cloudformation-and-spot-instances/)
+- Mount EFS on EC2
+  - [Attach EFS en instancia EC2](https://www.youtube.com/watch?v=V9WE1aKuBp0)
 - λORM
   - [npm](https://www.npmjs.com/package/lambdaorm)
   - [Github](https://github.com/FlavioLionelRita/lambdaorm)
+  - [docker image](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general)

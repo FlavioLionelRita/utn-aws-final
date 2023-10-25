@@ -237,7 +237,7 @@ aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName
 ```bash
 chmod 400 SSH.pem
 ## connect to EC2 instance
-ssh -i "SSH.pem" ec2-user@ec2-34-247-92-153.eu-west-1.compute.amazonaws.com
+ssh -i ./ec2/SSH.pem ec2-user@ec2-54-154-175-101.eu-west-1.compute.amazonaws.com
 ## connect to RDS instance from EC2 instance
 sudo yum install mysql -y
 mysql -u northwind -p -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com
@@ -269,11 +269,9 @@ exit;
 ```sh
 scp -i ./ec2/SSH.pem ./workspace/northwind-mysql.sql ec2-user@ec2-34-247-92-153.eu-west-1.compute.amazonaws.com:/home/ec2-user
 ssh -i ./ec2/SSH.pem ec2-user@ec2-34-247-92-153.eu-west-1.compute.amazonaws.com
-mysql -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -p northwind < northwind-mysql.sql
-northwind
+mysql -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com -u northwind -pnorthwind northwind < northwind-mysql.sql
 # verify
-mysql -u northwind -p -h db-instance.cqmjptrynsxv.eu-west-1.rds.amazonaws.com
-northwind
+mysql -h lambdaorm-mysql.cqmjptrynsxv.eu-west-1.rds.amazonaws.com  -u northwind -pnorthwind northwind
 use northwind;
 show tables;
 select count(1) from Orders;
