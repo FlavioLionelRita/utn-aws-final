@@ -1,9 +1,3 @@
-<style>
-  pre {
-    font-size: 0.7em;
-  }
-</style>
-
 # Trabajo Practico Final Integrador
 
 **Curso:** AWS Cloud Computing (999192849) \
