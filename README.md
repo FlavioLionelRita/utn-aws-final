@@ -24,50 +24,47 @@ Por este motivo se realizara:
 
 ### [λORM](https://www.npmjs.com/package/lambdaorm)
 
-Es un ORM escrito en Node.js el cual puede ser consumido como un servicio mediante la imagen [lambdaorm-svc](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general)
+Es un ORM escrito en Node.js el cual puede ser consumido como un [paquete de NodeJs](https://www.npmjs.com/package/lambdaorm) o como servicio mediante la imagen [lambdaorm-svc](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general), que es lo que se utilizara en este laboratorio.
 
 ![npm](./Images/lambdaorm-npm.png)
 
-## Solución
+## Arquitectura
 
-### Arquitectura
+![arquitectura](./Images/Architecture.png)
 
 ### Servicios
 
-| Servicio                                  | Descripción                                                                                                                   |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| AWS CloudFormation                        | Servicio que le ayuda a modelar y configurar sus recursos de AWS de forma segura, eficiente y repetible.                      |
-| Amazon Virtual Private Cloud (VPC)        | Servicio que le permite aprovisionar una sección de la nube de AWS aislada lógicamente donde puede ejecutar recursos de AWS.  |
-| Amazon Elastic Container Service (ECS)    | Servicio de orquestación de contenedores altamente escalable y de alto rendimiento que admite contenedores de Docker          |
-| Amazon Elastic Compute Cloud (EC2)        | Servicio web que proporciona capacidad informática segura y de tamaño modificable en la nube.                                 |
-| Amazon Elastic File System (EFS)          | Proporciona un almacenamiento de archivos sencillo, escalable y elástico para casos de uso de Linux para la nube.             |
-| Amazon Relational Database Service (RDS)  | Facilita la configuración, el funcionamiento y el escalado de las bases de datos relacionales en la nube.                     |
-| Amazon CloudWatch                         | Servicio de supervisión y observación integral para recursos en la nube y aplicaciones en ejecución en AWS.                   |
-| Amazon CloudWatch Logs                    | Servicio para monitorear y diagnosticar aplicaciones y sistemas en tiempo real.                                               |
-| Amazon Load Balancer (ALB)                | Distribuye el tráfico de entrada a varias aplicaciones o contenedores en función de las reglas de enrutamiento                |
+| **Servicio**                       | **Descripción**                                                                                                             |
+| -----------------------------------| --------------------------------------------------------------------------------------------------------------------------- |
+| CloudFormation                     | Servicio que le ayuda a modelar y configurar sus recursos de AWS de forma segura, eficiente y repetible.                    |
+| Virtual Private Cloud (VPC)        | Servicio que le permite aprovisionar una sección de la nube de AWS aislada lógicamente donde puede ejecutar recursos de AWS.|
+| Elastic Container Service (ECS)    | Servicio de orquestación de contenedores altamente escalable y de alto rendimiento que admite contenedores de Docker        |
+| Elastic Compute Cloud (EC2)        | Servicio web que proporciona capacidad informática segura y de tamaño modificable en la nube.                               |
+| Elastic File System (EFS)          | Proporciona un almacenamiento de archivos sencillo, escalable y elástico para casos de uso de Linux para la nube.           |
+| Relational Database Service (RDS)  | Facilita la configuración, el funcionamiento y el escalado de las bases de datos relacionales en la nube.                   |
+| CloudWatch                         | Servicio de supervisión y observación integral para recursos en la nube y aplicaciones en ejecución en AWS.                 |
+| CloudWatch Logs                    | Servicio para monitorear y diagnosticar aplicaciones y sistemas en tiempo real.                                             |
+| Load Balancer (ALB)                | Distribuye el tráfico de entrada a varias aplicaciones o contenedores en función de las reglas de enrutamiento              |
 
 ## Costos
 
-Resumen:
+Estimación de costos:
+a
+![costos estimación](./Images/costos-estimacion.png)
+
+Costos reales por dia utilizados para el laboratorio (utilizados con credito):
 
 ![resumen](./Images/costos-resumen.png)
 
-Costos por servicio (actualmente ahorro utilizando credito):
+Costos reales por servicio utilizados para el laboratorio (utilizados con credito):
 
 ![costos por servicio](./Images/costos-por-service.png)
 
-| Servicio                                  | Costo Diario              | Costo Mensual                 | Detalle del Calculo                                   |
-| ----------------------------------------- | ------------------------- | ----------------------------- | ----------------------------------------------------- |
-| AWS CloudFormation                        | $0.00                     | $0.00                         |                                                       |
-| Amazon Virtual Private Cloud (VPC)        | $0.00                     | $0.00                         |                                                       |
-| Amazon Elastic Container Service (ECS)    | $0.00                     | $0.00                         |                                                       |
-| Amazon Elastic Compute Cloud (EC2)        | $0.00                     | $0.00                         |                                                       |
-| Amazon Elastic File System (EFS)          | $0.00                     | $0.00                         |                                                       |
-| Amazon Relational Database Service (RDS)  | $0.00                     | $0.00                         |                                                       |
-| Amazon CloudWatch                         | $0.00                     | $0.00                         |                                                       |
-| Amazon CloudWatch Logs                    | $0.00                     | $0.00                         |                                                       |
-| Amazon Load Balancer (ALB)                | $0.00                     | $0.00                         |                                                       |
-| **Total**                                 | **$0.00**                 | **$0.00**                     |                                                       |
+**Observaciones:**
+
+Tener en cuenta que este laboratorio se desplegara temporalmente y por no mas de 2 horas, por lo que los costos serán mínimos. \
+De todas formas se puede plantear una arquitectura mas económica utilizando Fargate Spot, que es un servicio que permite ejecutar tareas de ECS en instancias EC2 Spot, lo que permite reducir los costos hasta en un 70%. \
+También ser puede utilizar una sola red publica y una sola red privada y descartar el balanceador de carga, para reducir aun mas los costos.
 
 ## Implementación
 
@@ -280,6 +277,13 @@ Resources:
 
 ### Security Groups
 
+Se crean los siguientes grupos de seguridad:
+
+- EC2SecurityGroup: Permite el acceso a los puertos 22 IP.
+- ServiceSecurityGroup: Permite el acceso al puerto 80 desde el LoadBalancerSecurityGroup y EC2SecurityGroup.
+- DatabaseSecurityGroup: Permite el acceso al puerto 3306 desde el ServiceSecurityGroup y EC2SecurityGroup.
+- LoadBalancerSecurityGroup: Permite el acceso al puerto 80 desde internet.
+
 Template:
 
 ```yaml
@@ -359,6 +363,8 @@ Resources:
 
 ### Database
 
+Se crea una base de datos MySQL en RDS.
+
 ![rds](./Images/rds.png)
 
 Template:
@@ -401,6 +407,8 @@ Resources:
 ```
 
 ### Load Balancer
+
+Se crea un Load Balancer para el servicio de [λORM](https://www.npmjs.com/package/lambdaorm).
 
 ![load-balancer](./Images/load-balancer.png)
 
@@ -455,6 +463,8 @@ Resources:
 ```
 
 ### Storage
+
+Se crea un sistema de archivos EFS para compartir el schema de [λORM](https://www.npmjs.com/package/lambdaorm) entre los contenedores de ECS y el EC2.
 
 ![efs](./Images/efs.png)
 
@@ -516,6 +526,9 @@ Resources:
 ```
 
 ### Cluster
+
+Se crea un cluster de ECS con un Auto Scaling Group para EC2 y un Capacity Provider para EC2.
+Se crea un Log Group para el cluster de ECS.
 
 ![cluster](./Images/ecs-cluster.png)
 
@@ -616,6 +629,8 @@ Resources:
 
 ### EC2
 
+Se crea una instancia EC2 para poder ejecutar scripts de inicialización de la base de datos y copiar el schema de [λORM](https://www.npmjs.com/package/lambdaorm) al volume de la imagen del servicio [lambdaorm-svc](https://hub.docker.com/repository/docker/flaviorita/lambdaorm-svc/general).
+
 ![ec2](./Images/ec2.png)
 
 Template:
@@ -669,6 +684,8 @@ Resources:
 ```
 
 ### Service
+
+Se crea un servicio de ECS para ejecutar el servicio de [λORM](https://www.npmjs.com/package/lambdaorm) en un cluster de contenedores.
 
 ![service](./Images/ecs-service.png)
 
@@ -843,9 +860,10 @@ Resources:
       RoleARN: !GetAtt ECSServiceAutoScalingRole.Arn 
 ```
 
-### Scripts
+### Script de creación
 
-Script de creación:
+Se utiliza un script para la creación de los stacks de CloudFormation. \
+A medida que se ejecuta cada stack se van guardando los outputs en archivos json para que los stacks siguientes puedan utilizarlos como parámetros.
 
 ```sh
 Namespace=lambdaorm
@@ -945,7 +963,10 @@ aws cloudformation deploy --template-file ./service/template.yaml --capabilities
 aws cloudformation describe-stacks --region eu-west-1 --query "Stacks[?StackName=='lambdaorm-service'][].Outputs" --no-paginate --output json > ./service/result.json
 ```
 
-Script de borrado:
+### Script de borrado
+
+Se utiliza un script para la eliminación de los stacks de CloudFormation. \
+Se eliminan los stacks en el orden inverso a la creación.
 
 ```sh
 aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-service && aws cloudformation wait stack-delete-complete --stack-name lambdaorm-service &&
@@ -960,16 +981,25 @@ aws cloudformation delete-stack --region eu-west-1 --stack-name lambdaorm-networ
 
 ### Test
 
+Prueba de funcionamiento del servicio de [λORM](https://www.npmjs.com/package/lambdaorm). \
+Se invoca el endpoint `/ping` del servicio de [λORM](https://www.npmjs.com/package/lambdaorm).
+
 ![ping](./Images/lambda-svc-ping.png)
 
 ## Pendientes
+
+Las siguientes tareas quedan pendientes:
 
 - Administrar las credenciales de la base de datos utilizando **Secrets Manager**
 - Exponer el servicio con HTTPS
 - Crear lambda que se ejecute cuando se suba un schema a un bucket de S3 especifico y lo copie al EFS.
 - Crear lambda que se ejecute cuando se suba un script de SQL a un bucket de S3 especifico y lo ejecute en la base de datos.
+- En el servicio usar LaunchType: EC2
+- Orquestar el la creación como la eliminación con alguna herramienta como Jenkins
 
 ## References
+
+Material de referencia utilizado para la creación de este proyecto:
 
 - EC2
   - [Create key pairs](https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#KeyPairs:)
